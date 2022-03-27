@@ -1,5 +1,5 @@
 /**
- * Sample React Native App
+ * Sample React Native Home
  * https://github.com/facebook/react-native
  *
  * @format
@@ -9,45 +9,28 @@
 import React, { Fragment, useEffect, useState } from "react";
 import type {Node} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   FlatList,
   View,
   Item, RefreshControl,
 } from "react-native";
-
-import {
-  Colors,
-  DebugInstructions,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import icons from './assets/fonts/icons'
-import IconSet from './components/IconSet'
-import Header from './components/Header'
-import Page from './components/Page'
-import Hairline from './components/Hairline'
+import Header from '../../components/Header'
+import Page from '../../components/Page'
+import Hairline from '../../components/Hairline'
 import ListItem from './ListItem'
 
-import  {fetchMovieList}  from './services/api'
-import ListEmptyComponent from "./components/ListEmptyComponent";
+import  {fetchMovieList}  from '../../services/api'
+import ListEmptyComponent from "../../components/ListEmptyComponent";
 
-global.XMLHttpRequest = global.originalXMLHttpRequest
-  ? global.originalXMLHttpRequest
-  : global.XMLHttpRequest;
-global.FormData = global.originalFormData
-  ? global.originalFormData
-  : global.FormData;
-
-const App: () => Node = () => {
+const Home = (props) => {
   const [movieList, setMovieList] = useState([])
   const [pageIndex, setPageIndex] = useState(0)
   const [count, setCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [refreshing, setRefreshing] = useState(true)
+
+  const { navigation } = props
 
   useEffect(()=>{
     if(refreshing){
@@ -93,7 +76,9 @@ const App: () => Node = () => {
         <FlatList
           ItemSeparatorComponent={Hairline}
           data={movieList}
-          renderItem={ListItem}
+          renderItem={ ({ item, index, separators })=>
+              <ListItem data = {{item, index,separators,navigation}}
+            />}
           onEndReachedThreshold={0.5}
           onEndReached={handleEndReached}
           ListEmptyComponent={ListEmptyComponent}
@@ -121,4 +106,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default App;
+export default Home;

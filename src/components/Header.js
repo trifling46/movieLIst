@@ -12,13 +12,19 @@ import {
 } from 'react-native';
 import IconSet from "./IconSet";
 import icons from '../assets/fonts/icons'
+import {useNavigation} from "@react-navigation/native";
 
 const Header = (props) => {
   const {style = {}, title, color, onBack} = props
+  const navigation = useNavigation()
   const colorStyle = {color:color}
 
   const handleBack =()=> {
-    onBack && onBack()
+    if(onBack){
+      onBack()
+    }else{
+      navigation.goBack()
+    }
   }
   return (
     <>
@@ -36,6 +42,7 @@ const Header = (props) => {
 const styles = StyleSheet.create({
   header:{
     ...StyleSheet.absoluteFill,
+    zIndex:10,
     height:40,
     flexDirection: 'row',
     justifyContent: 'center',
